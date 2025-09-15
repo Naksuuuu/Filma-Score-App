@@ -1,12 +1,25 @@
 import { API_CONFIG } from "./config";
 
 class Film {
-  getUrl(endpoint: string, params: Record<string, string | number>): string {
+  private getUrl(endpoint: string, params: Record<string, string | number>): string {
     const searchParams = new URLSearchParams({
-      apikey: API_CONFIG.API_KEY,
+      api_key: API_CONFIG.API_KEY,
       ...params,
     });
-    return `${endpoint}?${searchParams}`;
+    return `${endpoint}?${searchParams.toString()}`;
+  }
+
+  private async fetchData(url: string) {
+    const response = await fetch(url);
+
+    if (!response.ok) throw new Error("Tmdb api error" + response.statusText);
+    return response.json();
+  }
+
+  async getPopularMovie() {
+    const url = this.getUrl(`${API_CONFIG.BASE_URL}/movie/popular`, {});
+
+    return this.fetchData(url);
   }
 }
 
