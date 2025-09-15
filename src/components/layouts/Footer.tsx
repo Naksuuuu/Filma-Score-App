@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="min-h-screen bg-black">
+    <footer className="min-h-screen">
       <p>ini footer</p>
     </footer>
   );
