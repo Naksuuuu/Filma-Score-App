@@ -21,6 +21,12 @@ class Film {
 
     return this.fetchData(url);
   }
+
+  async getTopRatedMovie() {
+    const url = this.getUrl(`${API_CONFIG.BASE_URL}/movie/top_rated`, {});
+
+    return this.fetchData(url);
+  }
 }
 
 export const FilmApi = new Film();
