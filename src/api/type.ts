@@ -5,6 +5,7 @@ interface itemTopRatedMoviesType {
   popularity: number;
   release_date: string;
   poster_path: string;
+  vote_average: number;
 }
 
 export interface topRatedMoviesType {
