@@ -19,7 +19,6 @@ const ListTopMovies = ({ titlePage, useGetTopMovies }: ListTopMoviesProps) => {
   useEffect(() => {
     if (rawTopMovies.data) {
       setTopMovies(rawTopMovies.data);
-      console.log(rawTopMovies.data.results);
     }
   }, [rawTopMovies.data]);
 
