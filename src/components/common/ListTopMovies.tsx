@@ -23,6 +23,14 @@ const ListTopMovies = ({ titlePage, useGetTopMovies }: ListTopMoviesProps) => {
     }
   }, [rawTopMovies.data]);
 
+  if (rawTopMovies.error) {
+    return (
+      <div>
+        <p>gagal fetch</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto flex flex-col gap-6">
       <h2 className="text-self-primary text-3xl flex items-center gap-4">
@@ -41,13 +49,6 @@ const ListTopMovies = ({ titlePage, useGetTopMovies }: ListTopMoviesProps) => {
                       alt={`${movie.title} poster`}
                       className="object-cover "
                     />
-                    {/* <div className="absolute z-50 -bottom-5 right-3 h-10 w-10 rounded-full">
-                      <div className="backdrop:blur-3xl ">
-                        <Star className="w-5 h-5 fill-current " />
-
-                        {movie.vote_average.toFixed(1)}
-                      </div>
-                    </div> */}
                   </div>
 
                   <CardHeader className="pb-3">
