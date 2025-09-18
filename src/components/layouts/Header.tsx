@@ -17,7 +17,7 @@ const Header = () => {
         <div className="flex gap-4 font-medium tracking-tight">
           {links.map((link) => {
             return (
-              <NavLink to={link.path} className="relative">
+              <NavLink to={link.path} key={link.path} className="relative">
                 {({ isActive }) => (
                   <div className="relative">
                     <p className="pb-1">{link.label}</p>
