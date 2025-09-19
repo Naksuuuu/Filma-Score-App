@@ -7,11 +7,9 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <div className="min-h-screen flex flex-col">
-        <div className="w-full">
-          <div className="flex justify-center mb-12">
-            <SearchInput />
-          </div>
+      <div className="min-h-screen">
+        <div className="w-full px-8 mb-12">
+          <SearchInput className="mx-auto" />
         </div>
 
         <div className="flex flex-col gap-12">

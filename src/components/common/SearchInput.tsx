@@ -3,13 +3,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-const SearchInput = () => {
+const SearchInput = ({ className }: React.ComponentProps<"div">) => {
   const [searchValue, setSearchValue] = useState<string>("");
 
   const handleSubmit = () => {};
 
   return (
-    <div className="w-full max-w-lg">
+    <div className={`w-full max-w-lg ${className}`}>
       <div className="relative flex items-center">
         <div className="absolute left-3 z-10">
           <Search className="h-4 w-4 text-muted-foreground" />
