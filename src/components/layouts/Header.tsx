@@ -4,7 +4,7 @@ import useWindowWidth from "@/hooks/useWindowWidth";
 import { Menu, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import Navigation from "./MainNavigation";
+import Navigation from "./Navigation";
 
 const Header = () => {
   const width = useWindowWidth();
