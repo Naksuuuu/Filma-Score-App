@@ -27,6 +27,12 @@ class Film {
 
     return this.fetchData(url);
   }
+
+  async getAllMovies(page: number) {
+    const url = this.getUrl(`${API_CONFIG.BASE_URL}/movie/popular`, { page: page });
+
+    return this.fetchData(url);
+  }
 }
 
 export const FilmApi = new Film();

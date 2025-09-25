@@ -14,8 +14,8 @@ const links = [
   { path: "/", label: "Home" },
 
   {
-    path: "/movies",
     label: "Movies",
+    prefix: "/movies",
     children: [
       {
         path: "/movies/popular",
@@ -39,13 +39,13 @@ const Navigation = ({ setIsOpen }: NavigationProps) => {
   return (
     <NavigationMenu viewport={false}>
       <NavigationMenuList className="flex flex-col sm:flex-row">
-        {links.map((link) => {
+        {links.map((link, index) => {
           return (
-            <NavigationMenuItem key={link.path} className="relative">
+            <NavigationMenuItem key={index} className="relative">
               {link.children ? (
                 <>
                   <NavigationMenuTrigger>
-                    {location.pathname.startsWith(`${link.path}`) ? (
+                    {location.pathname.startsWith(`${link.prefix}`) ? (
                       <p className="text-self-primary">{link.label}</p>
                     ) : (
                       <p>{link.label}</p>
@@ -57,7 +57,7 @@ const Navigation = ({ setIsOpen }: NavigationProps) => {
                         return (
                           <li key={subLink.path}>
                             <NavigationMenuLink asChild>
-                              <Link to={link.path} onClick={() => setIsOpen?.((prev) => (prev = !prev))}>
+                              <Link to={subLink.path} onClick={() => setIsOpen?.((prev) => (prev = !prev))}>
                                 {subLink.label}
                               </Link>
                             </NavigationMenuLink>

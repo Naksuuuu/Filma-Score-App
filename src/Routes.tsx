@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import Layout from "./components/layouts/Layout";
-import Movies from "./pages/Movies";
+import Popular from "./pages/movies/Popular";
 
 export const Routes = createBrowserRouter([
   {
@@ -13,7 +13,12 @@ export const Routes = createBrowserRouter([
       },
       {
         path: "/movies",
-        element: <Movies />,
+        children: [
+          {
+            path: "popular",
+            element: <Popular />,
+          },
+        ],
       },
     ],
   },
