@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 export const FILM_KEY = {
   popular: () => ["popular"] as const,
   topRated: () => ["top_rated"] as const,
-  allMovies: (page: number) => ["all_movies", page] as const,
+  allMovies: (page: number, genreIds?: number[]) => ["all_movies", page, genreIds] as const,
+  listGenreMovies: () => ["list_genre"] as const,
 } as const;
 
 export function usePopularMovie() {
@@ -21,9 +22,16 @@ export function useTopRatedMovie() {
   });
 }
 
-export function useAllMovies(page: number) {
+export function useAllMovies(page: number, genreIds?: number[]) {
   return useQuery({
-    queryKey: FILM_KEY.allMovies(page),
-    queryFn: () => FilmApi.getAllMovies(page),
+    queryKey: FILM_KEY.allMovies(page, genreIds),
+    queryFn: () => FilmApi.getAllMovies(page, genreIds),
+  });
+}
+
+export function useGenreMovies() {
+  return useQuery({
+    queryKey: FILM_KEY.listGenreMovies(),
+    queryFn: () => FilmApi.getListGenre(),
   });
 }

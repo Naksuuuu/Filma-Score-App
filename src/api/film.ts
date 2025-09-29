@@ -28,8 +28,19 @@ class Film {
     return this.fetchData(url);
   }
 
-  async getAllMovies(page: number) {
-    const url = this.getUrl(`${API_CONFIG.BASE_URL}/movie/popular`, { page: page });
+  async getAllMovies(page: number, genreIds?: number[]) {
+    const url = this.getUrl(`${API_CONFIG.BASE_URL}/discover/movie`, {
+      page: page,
+      sort_by: `popularity.desc`,
+      ...(genreIds && genreIds.length > 0 ? { with_genres: genreIds.join(",") } : {}),
+    });
+
+    console.log(url);
+    return this.fetchData(url);
+  }
+
+  async getListGenre() {
+    const url = this.getUrl(`${API_CONFIG.BASE_URL}/genre/movie/list`, {});
 
     return this.fetchData(url);
   }

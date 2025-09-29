@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bookmark, Calendar, Star } from "lucide-react";
-import { useEffect, useState } from "react";
-import type { topRatedMoviesType } from "@/api/type";
+import React, { useEffect, useState } from "react";
+import type { listGenreType, topRatedMoviesType } from "@/api/type";
 import {
   Pagination,
   PaginationContent,
@@ -11,17 +11,21 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useGenreMovies } from "@/hooks/useFilmQuery";
 
 interface ListAllMoviesProps {
   titlePage: string;
-  useGetTopMovies: (page: number) => {
+  useAllMovies: (
+    page: number,
+    genreId: number[]
+  ) => {
     data?: topRatedMoviesType;
     isLoading: boolean;
     error?: unknown;
   };
 }
 
-const ListAllMovies = ({ titlePage, useGetTopMovies, className }: React.ComponentProps<"div"> & ListAllMoviesProps) => {
+const ListAllMovies = ({ titlePage, useAllMovies, className }: React.ComponentProps<"div"> & ListAllMoviesProps) => {
   const [page, setPage] = useState<number>(1);
   const windowSize: number = 3;
   const maxPage: number = 500;
@@ -39,14 +43,30 @@ const ListAllMovies = ({ titlePage, useGetTopMovies, className }: React.Componen
   };
   const pages = getNumberPage(page, maxPage, windowSize);
 
-  const rawTopMovies = useGetTopMovies(page);
+  const [selectedIdGenre, setSelectedIdGenre] = useState<number[]>([]);
+  const rawTopMovies = useAllMovies(page, selectedIdGenre);
   const [topMovies, setTopMovies] = useState<topRatedMoviesType | null>(null);
+  const [genre, setGenre] = useState<listGenreType | null>(null);
+
+  const listGenre = useGenreMovies();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const genreId = Number(e.target.value);
+    setPage(1);
+
+    setSelectedIdGenre((prev) => (prev.includes(genreId) ? prev.filter((id) => id !== genreId) : [...prev, genreId]));
+  };
 
   useEffect(() => {
     if (rawTopMovies.data) {
       setTopMovies(rawTopMovies.data);
+      console.log(selectedIdGenre);
     }
-  }, [rawTopMovies.data, page]);
+
+    if (listGenre.data) {
+      setGenre(listGenre.data);
+    }
+  }, [rawTopMovies.data, listGenre.data, selectedIdGenre]);
 
   if (rawTopMovies.error) {
     return (
@@ -62,10 +82,22 @@ const ListAllMovies = ({ titlePage, useGetTopMovies, className }: React.Componen
         <Bookmark fill="currentColor" className="h-15 w-15" /> {titlePage}
       </h2>
 
-      <Pagination className="cursor-pointer">
-        <PaginationContent>
+      <div className="flex justify-center gap-4 flex-wrap">
+        {genre &&
+          genre.genres.map((g) => (
+            <label key={g.id} className="cursor-pointer">
+              <input type="checkbox" value={g.id} className="hidden peer" onChange={handleChange} />
+              <div className="px-4 py-2 rounded-lg border-2 border-blue-500 bg-blue-500 text-white transition-all hover:bg-blue-600 peer-checked:bg-black peer-checked:border-black peer-checked:text-white">
+                {g.name}
+              </div>
+            </label>
+          ))}
+      </div>
+
+      <Pagination>
+        <PaginationContent className="cursor-pointer">
           <PaginationItem>
-            <PaginationPrevious onClick={() => setPage((p) => Math.min(p - 1, 1))} />
+            <PaginationPrevious onClick={() => setPage((p) => Math.max(p - 1, 1))} />
           </PaginationItem>
           {pages.map((p) => {
             return (
@@ -81,7 +113,7 @@ const ListAllMovies = ({ titlePage, useGetTopMovies, className }: React.Componen
           </PaginationItem>
 
           <PaginationItem>
-            <PaginationNext onClick={() => setPage(page + 1)} />
+            <PaginationNext onClick={() => setPage((p) => Math.min(p + 1, 500))} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
