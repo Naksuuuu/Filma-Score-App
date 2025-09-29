@@ -1,10 +1,10 @@
 import ListAllMovies from "@/components/common/ListAllMovies";
-import { useAllMovies } from "@/hooks/useFilmQuery";
+import { useAllPopularMovies } from "@/hooks/useFilmQuery";
 
 const Popular = () => {
   return (
     <div className="min-h-screen w-full px-8 mb-12">
-      <ListAllMovies titlePage="Most Popular Movies" useAllMovies={useAllMovies} className="mt-[12vh]" />
+      <ListAllMovies titlePage="Most Popular Movies" useAllMovies={useAllPopularMovies} className="mt-[12vh]" />
     </div>
   );
 };

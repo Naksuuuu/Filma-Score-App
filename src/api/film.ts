@@ -28,14 +28,24 @@ class Film {
     return this.fetchData(url);
   }
 
-  async getAllMovies(page: number, genreIds?: number[]) {
+  async getAllTopRatedMovies(page: number, genreIds?: number[]) {
+    const url = this.getUrl(`${API_CONFIG.BASE_URL}/discover/movie`, {
+      page: page,
+      sort_by: `vote_average.desc`,
+      "vote_count.gte": 2000,
+      ...(genreIds && genreIds.length > 0 ? { with_genres: genreIds.join(",") } : {}),
+    });
+
+    return this.fetchData(url);
+  }
+
+  async getAllPopularMovies(page: number, genreIds?: number[]) {
     const url = this.getUrl(`${API_CONFIG.BASE_URL}/discover/movie`, {
       page: page,
       sort_by: `popularity.desc`,
       ...(genreIds && genreIds.length > 0 ? { with_genres: genreIds.join(",") } : {}),
     });
 
-    console.log(url);
     return this.fetchData(url);
   }
 

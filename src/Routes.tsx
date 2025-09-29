@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import Layout from "./components/layouts/Layout";
 import Popular from "./pages/movies/Popular";
+import TopRated from "./pages/movies/TopRated";
 
 export const Routes = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const Routes = createBrowserRouter([
           {
             path: "popular",
             element: <Popular />,
+          },
+          {
+            path: "toprated",
+            element: <TopRated />,
           },
         ],
       },
