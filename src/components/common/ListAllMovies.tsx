@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bookmark, Calendar, Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import type { listGenreType, topRatedMoviesType } from "@/api/type";
+import type { listGenreType, MoviesType } from "@/api/type";
 import { useGenreMovies } from "@/hooks/useFilmQuery";
 import ListPagination from "./ListPagination";
 
@@ -11,7 +11,7 @@ interface ListAllMoviesProps {
     page: number,
     genreId: number[]
   ) => {
-    data?: topRatedMoviesType;
+    data?: MoviesType;
     isLoading: boolean;
     error?: unknown;
   };
@@ -22,7 +22,7 @@ const ListAllMovies = ({ titlePage, useAllMovies, className }: React.ComponentPr
 
   const [selectedIdGenre, setSelectedIdGenre] = useState<number[]>([]);
   const rawMovies = useAllMovies(page, selectedIdGenre);
-  const [movies, setMovies] = useState<topRatedMoviesType | null>(null);
+  const [movies, setMovies] = useState<MoviesType | null>(null);
   const [genre, setGenre] = useState<listGenreType | null>(null);
 
   const listGenre = useGenreMovies();

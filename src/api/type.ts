@@ -1,4 +1,4 @@
-interface itemTopRatedMoviesType {
+interface itemMoviesType {
   id: number;
   title: string;
   overview: string;
@@ -9,9 +9,9 @@ interface itemTopRatedMoviesType {
   genre_ids: number[];
 }
 
-export interface topRatedMoviesType {
+export interface MoviesType {
   page: number;
-  results: itemTopRatedMoviesType[];
+  results: itemMoviesType[];
   total_pages: number;
   total_results: number;
 }

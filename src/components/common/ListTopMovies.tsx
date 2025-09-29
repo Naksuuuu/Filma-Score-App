@@ -1,12 +1,12 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bookmark, Calendar, Star } from "lucide-react";
 import { useEffect, useState } from "react";
-import type { topRatedMoviesType } from "@/api/type";
+import type { MoviesType } from "@/api/type";
 
 interface ListTopMoviesProps {
   titlePage: string;
   useGetTopMovies: () => {
-    data?: topRatedMoviesType;
+    data?: MoviesType;
     isLoading: boolean;
     error?: unknown;
   };
@@ -14,7 +14,7 @@ interface ListTopMoviesProps {
 
 const ListTopMovies = ({ titlePage, useGetTopMovies }: ListTopMoviesProps) => {
   const rawTopMovies = useGetTopMovies();
-  const [topMovies, setTopMovies] = useState<topRatedMoviesType | null>(null);
+  const [topMovies, setTopMovies] = useState<MoviesType | null>(null);
 
   useEffect(() => {
     if (rawTopMovies.data) {
