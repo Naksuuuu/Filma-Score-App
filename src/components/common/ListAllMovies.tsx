@@ -2,16 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bookmark, Calendar, Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import type { listGenreType, topRatedMoviesType } from "@/api/type";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { useGenreMovies } from "@/hooks/useFilmQuery";
+import ListPagination from "./ListPagination";
 
 interface ListAllMoviesProps {
   titlePage: string;
@@ -27,25 +19,10 @@ interface ListAllMoviesProps {
 
 const ListAllMovies = ({ titlePage, useAllMovies, className }: React.ComponentProps<"div"> & ListAllMoviesProps) => {
   const [page, setPage] = useState<number>(1);
-  const windowSize: number = 3;
-  const maxPage: number = 500;
-
-  const getNumberPage = (current: number, total: number, size: number) => {
-    let start = Math.max(current - 1, 1);
-    let end = start + size - 1;
-
-    if (end > total) {
-      end = total;
-      start = Math.max(end - size + 1, 1);
-    }
-
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-  };
-  const pages = getNumberPage(page, maxPage, windowSize);
 
   const [selectedIdGenre, setSelectedIdGenre] = useState<number[]>([]);
-  const rawTopMovies = useAllMovies(page, selectedIdGenre);
-  const [topMovies, setTopMovies] = useState<topRatedMoviesType | null>(null);
+  const rawMovies = useAllMovies(page, selectedIdGenre);
+  const [movies, setMovies] = useState<topRatedMoviesType | null>(null);
   const [genre, setGenre] = useState<listGenreType | null>(null);
 
   const listGenre = useGenreMovies();
@@ -58,17 +35,16 @@ const ListAllMovies = ({ titlePage, useAllMovies, className }: React.ComponentPr
   };
 
   useEffect(() => {
-    if (rawTopMovies.data) {
-      setTopMovies(rawTopMovies.data);
-      console.log(selectedIdGenre);
+    if (rawMovies.data) {
+      setMovies(rawMovies.data);
     }
 
     if (listGenre.data) {
       setGenre(listGenre.data);
     }
-  }, [rawTopMovies.data, listGenre.data, selectedIdGenre]);
+  }, [rawMovies.data, listGenre.data]);
 
-  if (rawTopMovies.error) {
+  if (rawMovies.error) {
     return (
       <div>
         <p>gagal fetch</p>
@@ -94,33 +70,11 @@ const ListAllMovies = ({ titlePage, useAllMovies, className }: React.ComponentPr
           ))}
       </div>
 
-      <Pagination>
-        <PaginationContent className="cursor-pointer">
-          <PaginationItem>
-            <PaginationPrevious onClick={() => setPage((p) => Math.max(p - 1, 1))} />
-          </PaginationItem>
-          {pages.map((p) => {
-            return (
-              <PaginationItem key={p}>
-                <PaginationLink onClick={() => setPage(p)} isActive={p === page}>
-                  {p}
-                </PaginationLink>
-              </PaginationItem>
-            );
-          })}
-          <PaginationItem className="cursor-default">
-            <PaginationEllipsis />
-          </PaginationItem>
-
-          <PaginationItem>
-            <PaginationNext onClick={() => setPage((p) => Math.min(p + 1, 500))} />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <ListPagination page={page} setPage={setPage} />
 
       <div className="flex flex-wrap flex-col justify-center sm:flex-row gap-4 scrollbar-hide">
-        {topMovies?.results &&
-          topMovies.results.map((movie) => {
+        {movies?.results &&
+          movies.results.map((movie) => {
             return (
               <Card
                 key={movie.id}
@@ -160,29 +114,7 @@ const ListAllMovies = ({ titlePage, useAllMovies, className }: React.ComponentPr
           })}
       </div>
 
-      <Pagination className="cursor-pointer">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious onClick={() => setPage((p) => Math.min(p - 1, 1))} />
-          </PaginationItem>
-          {pages.map((p) => {
-            return (
-              <PaginationItem key={p}>
-                <PaginationLink onClick={() => setPage(p)} isActive={p === page}>
-                  {p}
-                </PaginationLink>
-              </PaginationItem>
-            );
-          })}
-          <PaginationItem className="cursor-default">
-            <PaginationEllipsis />
-          </PaginationItem>
-
-          <PaginationItem>
-            <PaginationNext onClick={() => setPage(page + 1)} />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <ListPagination page={page} setPage={setPage} />
     </div>
   );
 };
