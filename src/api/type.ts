@@ -24,3 +24,11 @@ interface genreType {
 export interface listGenreType {
   genres: genreType[];
 }
+
+export interface SearchMovieType extends itemMoviesType {
+  adult: boolean;
+}
+
+export interface SearchMoviesType extends Omit<MoviesType, "results"> {
+  result: SearchMovieType[];
+}

@@ -49,6 +49,14 @@ class Film {
     return this.fetchData(url);
   }
 
+  async getMoviesBySearch(query: string) {
+    const url = this.getUrl(`${API_CONFIG.BASE_URL}/search/movie`, {
+      query,
+    });
+
+    return this.fetchData(url);
+  }
+
   async getListGenre() {
     const url = this.getUrl(`${API_CONFIG.BASE_URL}/genre/movie/list`, {});
 

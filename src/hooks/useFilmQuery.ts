@@ -6,6 +6,7 @@ export const FILM_KEY = {
   topRated: () => ["top_rated"] as const,
   allTopRatedMovies: (page: number, genreIds?: number[]) => ["all_top_rated_movies", page, genreIds] as const,
   allPopularMovies: (page: number, genreIds?: number[]) => ["all_popular_movies", page, genreIds] as const,
+  moviesBySearch: (query: string) => ["movies_by_search", query] as const,
   listGenreMovies: () => ["list_genre"] as const,
 } as const;
 
@@ -34,6 +35,13 @@ export function useAllPopularMovies(page: number, genreIds?: number[]) {
   return useQuery({
     queryKey: FILM_KEY.allPopularMovies(page, genreIds),
     queryFn: () => FilmApi.getAllPopularMovies(page, genreIds),
+  });
+}
+
+export function useMoviesBySearch(query: string) {
+  return useQuery({
+    queryKey: FILM_KEY.moviesBySearch(query),
+    queryFn: () => FilmApi.getMoviesBySearch(query),
   });
 }
 
